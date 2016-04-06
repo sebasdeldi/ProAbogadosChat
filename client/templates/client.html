@@ -1,0 +1,159 @@
+
+<head>
+    <title>Meteor Chat Application.</title>
+</head>
+
+<body>
+    <!--LLAMADO AL TEMPLATE DEL NAV-BAR-->
+    {{> nav_bar }}
+    <div class="container">
+        <h1>ProAbogados</h1>
+
+        
+        {{> usersOnline}}
+
+        <!--LLAMADO A TEMPLATE QUE CONTIENE TODA LA FUNCIONALIDAD DE CHAT -->
+        {{#if currentUser}}
+            {{> chats }}
+        {{/if}}
+    </div>
+</body>
+
+<!-- SECCIÓN DE LOS TEMPLATES -->
+
+<template name="messages">
+
+</template>
+
+<!--TEMPLATE QUE CONTIENE LOS INPUTS DE TEXTO Y ARCHIVO -->
+<template name="input">
+
+    <input class="msg_input" data-id="{{_id}}" type="text" id="{{_id}}" rows="4">
+
+    <div class="file-upload">
+
+        <label for="myFileInput-{{_id}}">
+            <i class="cloud upload icon" style="font-size:20px"> </i>
+        </label>
+
+        <input class="custom-file-input" type="file" data-id="{{_id}}" id="myFileInput-{{_id}}">
+    </div>
+
+</template>
+
+
+
+
+
+
+<!--TEMPLATE QUE CONTIENE UNA LISTA DE LOS USUARIOS EN LINEA-->
+<template name="usersOnline">
+
+    <div class="chat_box">
+
+      <div class="chat_head">Miembros Online</div>
+
+      <div class="chat_body"> 
+        
+        {{#each usersOnline}}
+            
+            <div class="user" data-id="{{_id}}">{{username}}</div>
+               
+        {{/each}}
+        
+      </div>
+    </div>
+</template>
+
+<!--TEMPLATE QUE CONTIENE LOS CHATS ACTIVOS-->
+<template name="chats">
+    
+    {{#each chats}}
+            {{>chat}}
+    {{/each}}
+    
+</template>
+
+<!--TEMPLATE QUE CONTIENE TODOS LOS ELEMENTOS DEL NAV_BAR -->
+<template name="nav_bar">
+    <div class="ui fixed inverted menu">
+      <div class="ui container">
+        <a href="#" class="header item">
+          <img class="logo" src="images/logo_light.png">
+          ProAbogados
+        </a>
+        <div class="ui simple dropdown item">
+          
+        <!--LLAMADO A TEMPLATES DE ACCOUNT-UI -->
+        {{> loginButtons}}
+          
+        </div>
+        <a href="index.html" class="item">Inicio</a>
+        <a href="busqueda.html" class="item">Búsqueda</a>
+        <a href="abogados.html" class="item active">Abogados</a>
+        <a href="bufetes.html" class="item">Bufetes</a>
+        <a href="categorias.html" class="item">Categorías</a>
+        <div class="item">
+        <div class="ui transparent inverted icon input">
+          <i class="search icon"></i>
+          <input type="text" placeholder="Buscar tema...">
+        </div>
+      </div>
+
+
+        <div class="right menu">
+
+            <a class="item" href="#"><i class="money icon"></i> 57</a>
+        </div>
+
+
+      </div>
+    </div>
+</template>
+
+<!--TAMPLATE QUE INTEGRA TODOS LOS TEMPLATES ANTERIORES (RELACIONADOS CON LA FUNCIONALIDAD DEL CHAT) -->
+
+<template name="chat">
+    
+    <div class="msg_box" style="right:-290px">
+
+
+        <div class="msg_head">
+            Chat {{username _id}}
+            <div class="close"><i class="remove icon" data-id="{{_id}}"></i></div>
+        </div>
+        
+        <div class="msg_wrap">
+            <div class="msg_body">
+                {{#each messages _id}}
+                    
+                    {{#if isFile _id}}
+                        <strong>{{name}}:</strong> 
+                        {{#each getFile file}}
+                            
+                            <i class="attach icon"></i><a href="{{this.url}}" target="_blank" class="file-link">{{this.name}}</a><br>
+                            
+                        {{/each}}
+                    {{else}}
+                        <strong>{{name}}:</strong> {{message}}<br>
+                    {{/if}}
+
+                    
+                {{/each}}
+            </div>
+            {{> input }}
+        </div>
+        
+
+    </div>
+    
+    
+    
+</template>
+
+
+
+
+
+
+
